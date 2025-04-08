@@ -1,4 +1,6 @@
-﻿namespace khan2az_Module8_ContactListApp
+﻿using khan2az_Module8_ContactListApp.Views;
+
+namespace khan2az_Module8_ContactListApp
 {
     public partial class AppShell : Shell
     {

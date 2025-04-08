@@ -2,32 +2,77 @@
 using CommunityToolkit.Mvvm.Input;
 using khan2az_Module8_ContactListApp.Models;
 using System.Collections.ObjectModel;
+using System.Xml.Linq;
 
-namespace khan2az_Module8_ContactListApp.ViewModels;
-
-public partial class ContactsViewModel : ObservableObject
+namespace khan2az_Module8_ContactListApp.ViewModels
 {
-    public ObservableCollection<ContactPerson> Contacts { get; }
+public partial class ContactViewModel : ObservableObject
+{
+    [ObservableProperty]
+    private string name = "";
 
-    public ContactsViewModel(ObservableCollection<ContactPerson> contacts)
+    [ObservableProperty]
+    private string email = "";
+
+    [ObservableProperty]
+    private string phoneNumber = "";
+
+    [ObservableProperty]
+    private string description = "";
+
+    [ObservableProperty]
+    private ContactPerson selectedContact;
+
+    public ObservableCollection<ContactPerson> Contacts { get; } = new();
+
+    [RelayCommand]
+    private async Task SaveContactAsync()
     {
-        Contacts = contacts;
+        var contact = new ContactPerson
+        {
+            Name = Name,
+            Email = Email,
+            PhoneNumber = PhoneNumber,
+            Description = Description
+        };
+
+        Contacts.Add(contact);
+        ClearForm();
+        await Shell.Current.GoToAsync("//ContactsPage");
     }
 
     [RelayCommand]
-    async Task ViewDetails(ContactPerson contact)
-    {
-        var navigationParameter = new Dictionary<string, object>
-    {
-        { "SelectedContact", contact }
-    };
+    private async Task GoToAddContactPage() => await Shell.Current.GoToAsync("//MainPage");
 
-        await Shell.Current.GoToAsync(nameof(Views.ContactDetailsPage), navigationParameter);
+    [RelayCommand]
+    private async Task ShowContactDetails(ContactPerson contact)
+    {
+        SelectedContact = contact;
+        await Shell.Current.GoToAsync("ContactDetailsPage");
     }
 
     [RelayCommand]
-    async Task AddNewContact()
+    private void UpdateContact()
     {
-        await Shell.Current.GoToAsync(nameof(Views.MainPage));
+        var index = Contacts.IndexOf(SelectedContact);
+        if (index >= 0)
+        {
+            Contacts[index] = new ContactPerson
+            {
+                Name = Name,
+                Email = Email,
+                PhoneNumber = PhoneNumber,
+                Description = Description
+            };
+        }
     }
+
+    private void ClearForm()
+    {
+        Name = string.Empty;
+        Email = string.Empty;
+        PhoneNumber = string.Empty;
+        Description = string.Empty;
+    }
+}
 }

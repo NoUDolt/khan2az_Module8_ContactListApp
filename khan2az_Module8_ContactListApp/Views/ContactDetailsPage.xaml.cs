@@ -1,12 +1,18 @@
-﻿using khan2az_Module8_ContactListApp.ViewModels;
+﻿using Microsoft.Maui.Controls;
 
-namespace khan2az_Module8_ContactListApp.Views;
-
-public partial class ContactDetailsPage : ContentPage
+namespace khan2az_Module8_ContactListApp.Views
 {
-    public ContactDetailsPage()
+    public partial class ContactDetailsPage : ContentPage
     {
-        InitializeComponent();
-        BindingContext = new ContactDetailsViewModel();
+        public ContactDetailsPage()
+        {
+            InitializeComponent();
+        }
+
+        private async void OnBackClicked(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync("..", true);
+        }
     }
 }
+

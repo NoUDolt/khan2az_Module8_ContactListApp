@@ -11,8 +11,4 @@ public partial class MainPage : ContentPage
         InitializeComponent();
         BindingContext = new AddContactViewModel(contacts);
     }
-
-    public MainPage() : this(new ObservableCollection<ContactPerson>())
-    {
-    }
 }
