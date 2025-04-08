@@ -1,0 +1,26 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:khan2az_Module8_ContactListApp.ViewModels"
+             xmlns:models="clr-namespace:khan2az_Module8_ContactListApp.Models"
+             x:Class="khan2az_Module8_ContactListApp.Views.ContactDetailsPage"
+             x:DataType="viewmodels:ContactDetailsViewModel"
+             Title="Contact Details">
+
+    <VerticalStackLayout Padding="20" x:DataType="viewmodels:ContactDetailsViewModel">
+        <Label Text="Name" />
+        <Entry Text="{Binding SelectedContact.Name}" IsEnabled="{Binding IsEditing}" />
+
+        <Label Text="Email" />
+        <Entry Text="{Binding SelectedContact.Email}" IsEnabled="{Binding IsEditing}" />
+
+        <Label Text="Phone Number" />
+        <Entry Text="{Binding SelectedContact.PhoneNumber}" IsEnabled="{Binding IsEditing}" />
+
+        <Label Text="Description" />
+        <Editor Text="{Binding SelectedContact.Description}" IsEnabled="{Binding IsEditing}" HeightRequest="100" />
+
+        <Button Text="Edit" Command="{Binding EnableEditCommand}" IsVisible="{Binding IsEditing, Converter={StaticResource InverseBoolConverter}}" />
+        <Button Text="Save" Command="{Binding SaveChangesCommand}" IsVisible="{Binding IsEditing}" />
+        <Button Text="Back" Command="{Binding GoBackCommand}" />
+    </VerticalStackLayout>
+</ContentPage>
