@@ -2,7 +2,13 @@
   "profiles": {
     "Windows Machine": {
       "commandName": "Project",
+      "workingDirectory": "D:\\AndroidAVDs\\pixel_7_-_api_35.avd",
       "nativeDebugging": false
+    },
+    "Profile 1": {
+      "commandName": "Project",
+      "commandLineArgs": "Andrroiderm",
+      "workingDirectory": "D:\\AndroidAVDs\\avd"
     }
   }
 }

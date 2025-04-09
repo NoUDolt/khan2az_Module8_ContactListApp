@@ -7,6 +7,7 @@ namespace khan2az_Module8_ContactListApp.Views
         public ContactDetailsPage()
         {
             InitializeComponent();
+            BindingContext = App.SharedViewModel;
         }
 
         private async void OnBackClicked(object sender, EventArgs e)

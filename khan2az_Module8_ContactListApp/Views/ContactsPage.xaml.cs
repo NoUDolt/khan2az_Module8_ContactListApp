@@ -8,7 +8,7 @@ namespace khan2az_Module8_ContactListApp.Views
         public ContactsPage()
         {
             InitializeComponent();
-            BindingContext = new ContactViewModel();
+            BindingContext = App.SharedViewModel;
         }
 
         private async void OnSelectionChanged(object sender, SelectionChangedEventArgs e)

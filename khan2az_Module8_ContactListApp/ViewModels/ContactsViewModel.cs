@@ -2,77 +2,82 @@
 using CommunityToolkit.Mvvm.Input;
 using khan2az_Module8_ContactListApp.Models;
 using System.Collections.ObjectModel;
-using System.Xml.Linq;
 
 namespace khan2az_Module8_ContactListApp.ViewModels
 {
-public partial class ContactViewModel : ObservableObject
-{
-    [ObservableProperty]
-    private string name = "";
-
-    [ObservableProperty]
-    private string email = "";
-
-    [ObservableProperty]
-    private string phoneNumber = "";
-
-    [ObservableProperty]
-    private string description = "";
-
-    [ObservableProperty]
-    private ContactPerson selectedContact;
-
-    public ObservableCollection<ContactPerson> Contacts { get; } = new();
-
-    [RelayCommand]
-    private async Task SaveContactAsync()
+    public partial class ContactViewModel : ObservableObject
     {
-        var contact = new ContactPerson
+        [ObservableProperty] private ContactPerson selectedContact = new();
+
+        [ObservableProperty] private bool isEditing;
+
+        public ObservableCollection<ContactPerson> Contacts { get; } = new();
+        public IAsyncRelayCommand SaveContactAsyncCommand { get; }
+
+        public ContactViewModel()
         {
-            Name = Name,
-            Email = Email,
-            PhoneNumber = PhoneNumber,
-            Description = Description
-        };
+            SelectedContact = new ContactPerson();
+            SaveContactAsyncCommand = new AsyncRelayCommand(SaveContactAsync);
+        }
 
-        Contacts.Add(contact);
-        ClearForm();
-        await Shell.Current.GoToAsync("//ContactsPage");
-    }
-
-    [RelayCommand]
-    private async Task GoToAddContactPage() => await Shell.Current.GoToAsync("//MainPage");
-
-    [RelayCommand]
-    private async Task ShowContactDetails(ContactPerson contact)
-    {
-        SelectedContact = contact;
-        await Shell.Current.GoToAsync("ContactDetailsPage");
-    }
-
-    [RelayCommand]
-    private void UpdateContact()
-    {
-        var index = Contacts.IndexOf(SelectedContact);
-        if (index >= 0)
+        [RelayCommand]
+        private async Task SaveContactAsync()
         {
-            Contacts[index] = new ContactPerson
+            var contact = new ContactPerson
             {
-                Name = Name,
-                Email = Email,
-                PhoneNumber = PhoneNumber,
-                Description = Description
+                Name = SelectedContact.Name,
+                Email = SelectedContact.Email,
+                PhoneNumber = SelectedContact.PhoneNumber,
+                Description = SelectedContact.Description
             };
+
+            Contacts.Add(contact);
+            SelectedContact = new ContactPerson();
+            await Shell.Current.GoToAsync("//ContactsPage");
+        }
+
+        [RelayCommand] private async Task GoToAddContactPage() => await Shell.Current.GoToAsync("//MainPage");
+
+        [RelayCommand]
+        private async Task ShowContactDetails(ContactPerson contact)
+        {
+            SelectedContact = contact;
+            await Shell.Current.GoToAsync("ContactDetailsPage");
+        }
+
+        [RelayCommand]
+        private void UpdateContact()
+        {
+            var index = Contacts.IndexOf(SelectedContact);
+            if (index >= 0)
+            {
+                Contacts[index] = new ContactPerson
+                {
+                    Name = SelectedContact.Name,
+                    Email = SelectedContact.Email,
+                    PhoneNumber = SelectedContact.PhoneNumber,
+                    Description = SelectedContact.Description
+                };
+            }
+
+            isEditing = false;
+        }
+
+        [RelayCommand]
+        private void EditContact()
+        {
+            IsEditing = true;
+        }
+
+        [RelayCommand]
+        private async Task GoBack()
+        {
+            await Shell.Current.GoToAsync("..");
         }
     }
 
-    private void ClearForm()
+    public static class AppState
     {
-        Name = string.Empty;
-        Email = string.Empty;
-        PhoneNumber = string.Empty;
-        Description = string.Empty;
+        public static ContactViewModel ViewModel { get; } = new();
     }
-}
 }
