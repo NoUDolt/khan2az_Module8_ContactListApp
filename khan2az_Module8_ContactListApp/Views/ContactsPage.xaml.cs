@@ -1,20 +1,22 @@
 ﻿using khan2az_Module8_ContactListApp.Models;
 using khan2az_Module8_ContactListApp.ViewModels;
-using System.Collections.ObjectModel;
-using System.Net.NetworkInformation;
 
-namespace khan2az_Module8_ContactListApp.Views;
-
-public partial class ContactsPage : ContentPage
+namespace khan2az_Module8_ContactListApp.Views
 {
-    public ContactsPage()
+    public partial class ContactsPage : ContentPage
     {
-        InitializeComponent();
-        BindingContext = new ContactsViewModel(AppState.Contacts);
-    }
-}
+        public ContactsPage()
+        {
+            InitializeComponent();
+            BindingContext = App.SharedViewModel;
+        }
 
-public static class AppState
-{
-    public static ObservableCollection<ContactPerson> Contacts { get; } = new();
+        private async void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (BindingContext is ContactViewModel viewModel && e.CurrentSelection.FirstOrDefault() is ContactPerson selectedContact)
+            {
+                await viewModel.ShowContactDetailsCommand.ExecuteAsync(selectedContact);
+            }
+        }
+    }
 }

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using Microsoft.Maui;
+using khan2az_Module8_ContactListApp.ViewModels;
 
 namespace khan2az_Module8_ContactListApp
 {
@@ -13,5 +14,7 @@ namespace khan2az_Module8_ContactListApp
         {
             return new Window(new AppShell());
         }
+
+        public static ContactViewModel SharedViewModel { get; } = new ContactViewModel();
     }
 }

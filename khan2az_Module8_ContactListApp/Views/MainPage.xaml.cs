@@ -2,17 +2,14 @@
 using khan2az_Module8_ContactListApp.ViewModels;
 using System.Collections.ObjectModel;
 
-namespace khan2az_Module8_ContactListApp.Views;
-
-public partial class MainPage : ContentPage
+namespace khan2az_Module8_ContactListApp.Views
 {
-    public MainPage(ObservableCollection<ContactPerson> contacts)
+    public partial class MainPage : ContentPage
     {
-        InitializeComponent();
-        BindingContext = new AddContactViewModel(contacts);
-    }
-
-    public MainPage() : this(new ObservableCollection<ContactPerson>())
-    {
+        public MainPage()
+        {
+            InitializeComponent();
+            BindingContext = App.SharedViewModel;
+        }
     }
 }
